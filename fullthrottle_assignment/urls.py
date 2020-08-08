@@ -14,11 +14,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from fullthrottle_task import views
+from django.urls import path, include
+from rest_framework import routers
+from fullthrottle_task.views import *
 
+router = routers.DefaultRouter()
+router.register('api/users', UserViewSet)
+router.register('api/activity-periods', ActivityPeriodsViewSet)
+router.register(r'api/user-details', UserDetailsViewSet, basename='UserDetails')
 
 urlpatterns = [
+    path('', include(router.urls)),
     path('admin/', admin.site.urls),
-    path('fullthrottle/user_details', views.get_user_details_Api, name="get_user_details")
 ]
